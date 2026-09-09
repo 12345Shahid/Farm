@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; touch-action: manipulation; -webkit-tap-highlight-color: transparent; user-select: none; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0e17; color: #e0e6f0; }
+
+.game-container { max-width: 480px; margin: 0 auto; height: 100vh; display: flex; flex-direction: column; position: relative; overflow: hidden; }
+.game-header { flex-shrink: 0; }
+.game-content { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding-bottom: 60px; }
+.game-ad-banner { flex-shrink: 0; height: 60px; }
+
+.price-up { color: #00c853; }
+.price-down { color: #ff1744; }
+
+.card { background: #131a2b; border: 1px solid #1e2a45; border-radius: 12px; padding: 16px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; border-radius: 8px; padding: 10px 20px; font-weight: 600; font-size: 14px; cursor: pointer; border: none; transition: all 0.15s; }
+.btn:active { transform: scale(0.97); }
+.btn-primary { background: #1e7aff; color: white; }
+.btn-success { background: #00c853; color: white; }
+.btn-danger { background: #ff1744; color: white; }
+.btn-gold { background: #ffd700; color: #1a1a1a; }
+.btn-outline { background: transparent; border: 1px solid #1e2a45; color: #e0e6f0; }
+
+.buy-sell-tab { display: flex; gap: 8px; margin-bottom: 16px; }
+.buy-sell-tab button { flex: 1; padding: 12px; border-radius: 8px; font-weight: 700; border: none; cursor: pointer; }
+.buy-sell-tab .active-buy { background: #00c853; color: white; }
+.buy-sell-tab .active-sell { background: #ff1744; color: white; }
+.buy-sell-tab .inactive { background: #1e2a45; color: #6b7280; }
+
+.nav-bar { display: flex; background: #131a2b; border-top: 1px solid #1e2a45; position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%); max-width: 480px; width: 100%; }
+.nav-bar a { flex: 1; text-align: center; padding: 8px 0; font-size: 11px; color: #6b7280; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.nav-bar a.active { color: #1e7aff; }
+.nav-bar a svg { width: 22px; height: 22px; }
+
+/* Ad overlay */
+.ad-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 100; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.85); }
+.ad-container { width: 100%; max-width: 380px; background: #000; border-radius: 12px; overflow: hidden; position: relative; }
+.ad-badge { position: absolute; top: 8px; left: 8px; background: #ffd700; color: #000; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; z-index: 10; }
+.ad-skip-btn { position: absolute; top: 8px; right: 8px; background: rgba(255,255,255,0.15); color: white; border: none; padding: 6px 14px; border-radius: 6px; font-size: 13px; cursor: pointer; z-index: 10; }
+.ad-cta-btn { display: block; width: calc(100% - 32px); margin: 12px auto; padding: 14px; background: #1e7aff; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; text-align: center; }
+.ad-video-placeholder { width: 100%; aspect-ratio: 16/9; background: linear-gradient(135deg, #1a1a2e, #16213e); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px; color: #4a5568; }
+.ad-progress { height: 4px; background: #1e7aff; width: 0%; transition: width 1s linear; }
+
+.banner-ad { height: 60px; width: 100%; background: #131a2b; border-top: 1px solid #1e2a45; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #4a5568; position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); max-width: 480px; z-index: 50; }
+
+@keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 5px rgba(30,122,255,0.3); } 50% { box-shadow: 0 0 20px rgba(30,122,255,0.6); } }
+.claim-bonus { animation: pulse-glow 2s infinite; }
