@@ -1,0 +1,24 @@
+[
+  // Webshare proxies — one object per proxy
+  // Format: { ip, port, username, password, country }
+  // Each Webshare account gives 10 free proxies
+  // Open 5 accounts for 50 proxies total
+  //
+  // Example (replace with your real credentials):
+  // {"ip":"123.45.67.89", "port":8080, "username":"ws_user_1", "password":"ws_pass_1", "country":"US"}
+  //
+  // IMPORTANT: Do NOT commit real credentials to git.
+  // Create a separate proxies.json with your real data (this file is .gitignored).
+  //
+  // How to get proxies:
+  //   1. Go to https://webshare.io
+  //   2. Sign up with a temp email (10minutemail.com or temp-mail.org)
+  //   3. Each account gives 10 free datacenter proxies
+  //   4. Generate all 10, copy them here
+  //   5. Repeat for 5 accounts = 50 proxies
+  //   
+  //   Bot-to-proxy assignment: round-robin across all 50
+  //   For 5 bots → bots 1-5 use proxies 0-4
+  //   For 10 bots → bots 1-10 use proxies 0-9
+  //   etc.
+]

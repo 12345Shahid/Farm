@@ -6,9 +6,13 @@ const { getCanvasNoiseScript } = require('./canvasNoise');
 const { scanDom } = require('./domSniper');
 const { humanClick } = require('./bezierMouse');
 const { getContextOptions } = require('./identity');
-const { getProxyForBot } = require('./proxyManager');
+const { getProxyForBot, getLaunchConfig, connectUrbanVpn, verifyIp, setMode } = require('./proxyManager');
 
 const GAME_URL = process.env.GAME_URL || 'https://gifterly.vercel.app';
+
+// Set proxy mode from env (urban | webshare)
+const PROXY_MODE = process.env.PROXY_MODE || 'webshare';
+setMode(PROXY_MODE);
 
 /**
  * Wait until a specific selector is visible, or timeout
@@ -148,18 +152,13 @@ async function browseGame(page) {
  */
 async function runSession(profile, state) {
   const { botId } = profile;
-  console.log(`[Bot ${botId}] Starting session`);
+  console.log(`[Bot ${botId}] Starting session (mode: ${PROXY_MODE})`);
 
   const proxy = getProxyForBot(profile);
-  console.log(`[Bot ${botId}] Proxy: ${proxy.server} (${proxy.country})`);
+  const launchConfig = getLaunchConfig(proxy);
+  console.log(`[Bot ${botId}] Proxy type: ${proxy.type}, country: ${proxy.country}`);
 
-  const browser = await chromium.launch({
-    headless: true,
-    proxy: { server: proxy.server },
-    args: [
-      '--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage',
-    ],
-  });
+  const browser = await chromium.launch(launchConfig);
 
   const context = await browser.newContext({ ...getContextOptions(profile) });
   const page = await context.newPage();
@@ -170,6 +169,17 @@ async function runSession(profile, state) {
   });
 
   await page.addInitScript(getCanvasNoiseScript(botId));
+
+  // If Urban VPN mode, connect after browser launch
+  if (proxy.type === 'urban') {
+    console.log(`[Bot ${botId}] Connecting Urban VPN to ${proxy.label}...`);
+    try {
+      const connected = await connectUrbanVpn(browser, proxy);
+      console.log(`[Bot ${botId}] Urban VPN ${connected ? 'connected' : 'connection failed'}`);
+    } catch (err) {
+      console.log(`[Bot ${botId}] VPN error: ${err.message} — continuing without VPN`);
+    }
+  }
 
   const maxAds = parseInt(process.env.MAX_ADS || '3');
   let adsConsumed = 0;
