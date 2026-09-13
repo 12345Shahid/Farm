@@ -6,13 +6,22 @@ const { getCanvasNoiseScript } = require('./canvasNoise');
 const { scanDom } = require('./domSniper');
 const { humanClick } = require('./bezierMouse');
 const { getContextOptions } = require('./identity');
-const { getProxyForBot, getLaunchConfig, connectUrbanVpn, verifyIp, setMode } = require('./proxyManager');
+const { getProxyForBot, getLaunchConfig, connectUrbanVpn, verifyIp, setMode, loadProxiesFromFile } = require('./proxyManager');
 
 const GAME_URL = process.env.GAME_URL || 'https://gifterly.vercel.app';
+const PROXY_CONFIG_PATH = require('path').join(__dirname, '..', 'config', 'proxies.json');
 
 // Set proxy mode from env (urban | webshare)
 const PROXY_MODE = process.env.PROXY_MODE || 'webshare';
 setMode(PROXY_MODE);
+
+// Auto-load Webshare proxies if in webshare mode
+if (PROXY_MODE === 'webshare') {
+  const loaded = loadProxiesFromFile(PROXY_CONFIG_PATH);
+  if (loaded.length === 0) {
+    console.log(`[Worker] No proxies loaded. Set PROXY_MODE=urban or place proxies in config/proxies.json`);
+  }
+}
 
 /**
  * Wait until a specific selector is visible, or timeout
@@ -181,7 +190,10 @@ async function runSession(profile, state) {
     }
   }
 
-  const maxAds = parseInt(process.env.MAX_ADS || '3');
+  // Use clicksPerSession from orchestrator state, or env, default to 0 for safety
+  const maxAds = (state && state.clicksPerSession !== undefined)
+    ? state.clicksPerSession
+    : parseInt(process.env.MAX_ADS || '0');
   let adsConsumed = 0;
 
   try {

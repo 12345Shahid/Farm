@@ -138,7 +138,11 @@ async function runBot(botId) {
   state.totalSessions++;
   state.lastActive = new Date().toISOString();
 
-  const adState = { adsToday: state.adsToday, dailyCap: ORCHESTRATOR_MODE === 'test' ? 30 : 20 };
+  const adState = {
+    adsToday: state.adsToday,
+    dailyCap: ORCHESTRATOR_MODE === 'test' ? 30 : 20,
+    clicksPerSession: getClicksPerSession(),
+  };
 
   console.log(`[Orchestrator] Starting bot ${botId} (device: ${profile.device}, region: ${profile.vpnRegion})`);
 
