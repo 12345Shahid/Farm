@@ -5,7 +5,7 @@
   "main": "src/worker.js",
   "scripts": {
     "test": "node test-bot.js",
-    "start": "node src/worker.js"
+    "start": "node src/orchestrator.js"
   },
   "dependencies": {
     "playwright": "^1.47.0",

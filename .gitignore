@@ -7,4 +7,3 @@ extensions/*.crx
 *.log
 .DS_Store
 .vercel
-bot/config/proxies.json

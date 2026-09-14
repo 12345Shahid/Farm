@@ -63,6 +63,8 @@ function getWarmupPhase() {
 }
 
 function getActiveBotCount() {
+  // MAX_BOTS env var overrides everything for Railway deployment
+  if (process.env.MAX_BOTS) return parseInt(process.env.MAX_BOTS, 10);
   if (ORCHESTRATOR_MODE === 'test') return 2; // minimal for testing
   if (ORCHESTRATOR_MODE === 'full') return 150;
   const phase = getWarmupPhase();
