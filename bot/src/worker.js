@@ -179,6 +179,11 @@ async function runSession(profile, state) {
 
   await page.addInitScript(getCanvasNoiseScript(botId));
 
+  // Hide automation flags
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'webdriver', { get: () => undefined });
+  });
+
   // If Urban VPN mode, connect after browser launch
   if (proxy.type === 'urban') {
     console.log(`[Bot ${botId}] Connecting Urban VPN to ${proxy.label}...`);
