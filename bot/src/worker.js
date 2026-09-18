@@ -1,7 +1,9 @@
 // Reactive State Machine Worker v2 — sequential state transitions
 // Each ad cycle follows a strict pipeline: trigger → watch → skip → CTA → cleanup → next
 
-const { chromium } = require('playwright');
+const { chromium } = require('playwright-extra');
+const stealth = require('puppeteer-extra-plugin-stealth');
+chromium.use(stealth());
 const { getCanvasNoiseScript } = require('./canvasNoise');
 const { scanDom } = require('./domSniper');
 const { humanClick } = require('./bezierMouse');
